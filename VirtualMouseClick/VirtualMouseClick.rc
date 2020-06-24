@@ -1,7 +1,5 @@
 // Microsoft Visual C++ generated resource script.
 //
-#pragma code_page(65001)
-
 #include "resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
@@ -19,10 +17,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// ‰∏≠Êñá(ÁÆÄ‰ΩìÔºå‰∏≠ÂõΩ) resources
+// ÷–Œƒ(ºÚÃÂ£¨÷–π˙) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -54,7 +53,7 @@ BEGIN
     "\r\n"
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
-    "#include ""res\\VirtualMouseClick.rc2""  // Èóà?Microsoft Visual C++ ÁºÇÊ†¨Á∑´Èê®ÂãÆÁ•´Â©ß?\n"
+    "#include ""res\\VirtualMouseClick.rc2""  // Èó?Microsoft Visual C++ ÁºÇÊ†¨Á∑´Èê®ÂãÆÁ•´Â©?\n"
     "#include ""l.CHS\\afxres.rc""      // ÈèçÂõßÂôØÁºÅÂã™Ê¨¢\r\n"
     "#endif\r\n"
     "\0"
@@ -80,22 +79,20 @@ IDR_MAINFRAME           ICON                    "res\\VirtualMouseClick.ico"
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "ÂÖ≥‰∫é VirtualMouseClick"
+CAPTION "πÿ”⁄ VirtualMouseClick"
 FONT 9, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
-    LTEXT           "VirtualMouseClickÔºåÁâàÊú¨ 1.0",IDC_STATIC,42,14,114,8,SS_NOPREFIX
-    LTEXT           "ÁâàÊùÉÊâÄÊúâ (C) 2020",IDC_STATIC,42,26,114,8
-    DEFPUSHBUTTON   "Á°ÆÂÆö",IDOK,113,41,50,14,WS_GROUP
+    LTEXT           "VirtualMouseClick£¨∞Ê±æ 1.0",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "∞Ê»®À˘”– (C) 2020",IDC_STATIC,42,26,114,8
+    DEFPUSHBUTTON   "»∑∂®",IDOK,113,41,50,14,WS_GROUP
 END
 
-IDD_VIRTUALMOUSECLICK_DIALOG DIALOGEX 0, 0, 320, 200
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-EXSTYLE WS_EX_APPWINDOW
-FONT 9, "MS Shell Dlg", 0, 0, 0x1
+IDD_VIRTUALMOUSECLICK_DIALOG DIALOGEX 0, 0, 94, 63
+STYLE DS_SYSMODAL | DS_SETFONT | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_TOPMOST | WS_EX_TOOLWINDOW | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE | WS_EX_APPWINDOW
+FONT 15, "Microsoft Sans Serif", 400, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "Á°ÆÂÆö",IDOK,116,86,50,14
-    PUSHBUTTON      "ÂèñÊ∂à",IDCANCEL,263,179,50,14
 END
 
 
@@ -121,13 +118,13 @@ BEGIN
     BEGIN
         BLOCK "080404B0"
         BEGIN
-            VALUE "CompanyName", "TODO: <ÂÖ¨Âè∏Âêç>"
+            VALUE "CompanyName", "TODO: <π´Àæ√˚>"
             VALUE "FileDescription", "VirtualMouseClick"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "VirtualMouseClick.exe"
-            VALUE "LegalCopyright", "TODO:  (C) <ÂÖ¨Âè∏Âêç>„ÄÇ  ‰øùÁïôÊâÄÊúâÊùÉÂà©„ÄÇ"
+            VALUE "LegalCopyright", "TODO:  (C) <π´Àæ√˚>°£  ±£¡ÙÀ˘”–»®¿˚°£"
             VALUE "OriginalFilename", "VirtualMouseClick.exe"
-            VALUE "ProductName", "TODO: <‰∫ßÂìÅÂêç>"
+            VALUE "ProductName", "TODO: <≤˙∆∑√˚>"
             VALUE "ProductVersion", "1.0.0.1"
         END
     END
@@ -156,10 +153,10 @@ BEGIN
 
     IDD_VIRTUALMOUSECLICK_DIALOG, DIALOG
     BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 313
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 193
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 91
+        TOPMARGIN, 3
+        BOTTOMMARGIN, 59
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -183,10 +180,10 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_ABOUTBOX            "ÂÖ≥‰∫é VirtualMouseClick(&A)..."
+    IDS_ABOUTBOX            "πÿ”⁄ VirtualMouseClick(&A)..."
 END
 
-#endif    // ‰∏≠Êñá(ÁÆÄ‰ΩìÔºå‰∏≠ÂõΩ) resources
+#endif    // ÷–Œƒ(ºÚÃÂ£¨÷–π˙) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -203,7 +200,7 @@ END
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
-#include "res\VirtualMouseClick.rc2"  // Èóà?Microsoft Visual C++ ÁºÇÊ†¨Á∑´Èê®ÂãÆÁ•´Â©ß?
+#include "res\VirtualMouseClick.rc2"  // Èó?Microsoft Visual C++ ÁºÇÊ†¨Á∑´Èê®ÂãÆÁ•´Â©?
 #include "l.CHS\afxres.rc"      // ÈèçÂõßÂôØÁºÅÂã™Ê¨¢
 #endif
 
