@@ -4,7 +4,7 @@
 
 #pragma once
 
-
+#define	UM_DOWINTHRIGHTBUTTON WM_USER+1
 // CVirtualMouseClickDlg 对话框
 class CVirtualMouseClickDlg : public CDialog
 {
@@ -44,6 +44,8 @@ public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+protected:
+	afx_msg LRESULT OnUmDowinthrightbutton(WPARAM wParam, LPARAM lParam);
 };
 unsigned __stdcall ClickVir(void* pArguments);
 void virmouse_event(

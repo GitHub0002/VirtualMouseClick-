@@ -57,6 +57,7 @@ END_MESSAGE_MAP()
 
 volatile  bool CVirtualMouseClickDlg::g_bloop = true;
 volatile  bool CVirtualMouseClickDlg::m_blbuttondown = false;
+HWND g_thisWnd = NULL;
 CVirtualMouseClickDlg::CVirtualMouseClickDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(IDD_VIRTUALMOUSECLICK_DIALOG, pParent)
 {
@@ -80,6 +81,7 @@ BEGIN_MESSAGE_MAP(CVirtualMouseClickDlg, CDialog)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
 	ON_WM_SIZE()
+	ON_MESSAGE(UM_DOWINTHRIGHTBUTTON, &CVirtualMouseClickDlg::OnUmDowinthrightbutton)
 END_MESSAGE_MAP()
 
 
@@ -189,6 +191,16 @@ LRESULT CALLBACK LowLevelMouseProc(__in  int nCode, __in  WPARAM wParam, __in  L
 		//LOG("鼠标左键弹起");
 	}
 	break;
+	case WM_RBUTTONDOWN:
+	{
+		CVirtualMouseClickDlg::m_blbuttondown = false;
+		//CStringA ccchar;
+		ccchar.Format("%s,坐标(%d,%d)", "鼠标右键按下", mpt.x, mpt.y);
+		LOG(ccchar.GetString());
+		//LOG("鼠标左键弹起");
+		PostMessageA(g_thisWnd, UM_DOWINTHRIGHTBUTTON, 0, 0);
+	}
+	break;
 	default:
 		break;
 
@@ -279,9 +291,9 @@ BOOL CVirtualMouseClickDlg::OnInitDialog()
 	ModifyStyleEx(0, WS_EX_LAYERED);
 
 	::SetLayeredWindowAttributes(m_hWnd, RGB(0, 255, 0), 255, LWA_COLORKEY);//       //set color transparent，指定透明的颜色
-
+	g_thisWnd = this->m_hWnd;
 	g_hookMouse = SetWindowsHookExA(idHook, LowLevelMouseProc, NULL, NULL);
-
+	
 	unsigned threadID;
 
 	printf("Creating second thread...\n");
@@ -411,7 +423,7 @@ unsigned __stdcall ClickVir(void* pArguments)
 
 
 
-		if (x > 5000) CVirtualMouseClickDlg::g_bloop = false;
+		//if (x > 5000) CVirtualMouseClickDlg::g_bloop = false;
 	}
 
 	_endthreadex(0);
@@ -469,10 +481,15 @@ BOOL CVirtualMouseClickDlg::DestroyWindow()
 {
 	// TODO: 在此添加专用代码和/或调用基类
 	CVirtualMouseClickDlg::g_bloop = false;
-	WaitForSingleObject(m_hThread, INFINITE);
-	printf("Counter should be 1000000; it is-> %d\n", Counter);
-	// Destroy the thread object.
-	CloseHandle(m_hThread);
+	if (!m_hThread)
+	{
+		WaitForSingleObject(m_hThread, INFINITE);
+		printf("Counter should be 1000000; it is-> %d\n", Counter);
+		// Destroy the thread object.
+		CloseHandle(m_hThread);
+		m_hThread = NULL;
+	}
+
 	UnhookWindowsHookEx(g_hookMouse);
 	return CDialog::DestroyWindow();
 }
@@ -529,4 +546,31 @@ void CVirtualMouseClickDlg::OnSize(UINT nType, int cx, int cy)
 	}
 
 	Invalidate(); //强制重绘窗口
+}
+
+
+afx_msg LRESULT CVirtualMouseClickDlg::OnUmDowinthrightbutton(WPARAM wParam, LPARAM lParam)
+{
+	//MessageBoxA(g_thisWnd, "R", "RD", MB_OK);
+	if (CVirtualMouseClickDlg::g_bloop)
+	{
+		CVirtualMouseClickDlg::g_bloop = false;
+		WaitForSingleObject(m_hThread, INFINITE);
+		printf("Counter should be 1000000; it is-> %d\n", Counter);
+		// Destroy the thread object.
+		CloseHandle(m_hThread);
+		m_hThread = NULL;
+	}
+	else
+	{
+		unsigned threadID;
+
+		printf("Creating second thread...\n");
+		CVirtualMouseClickDlg::g_bloop = true;
+		// Create the second thread.
+		if(!m_hThread)
+		m_hThread = (HANDLE)_beginthreadex(NULL, 0, &ClickVir, this, 0, &threadID);
+	}
+	
+	return 0;
 }
