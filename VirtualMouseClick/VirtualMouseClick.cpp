@@ -6,6 +6,7 @@
 #include "framework.h"
 #include "VirtualMouseClick.h"
 #include "VirtualMouseClickDlg.h"
+#include "PassWordAuthor.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -64,6 +65,16 @@ BOOL CVirtualMouseClickApp::InitInstance()
 	// TODO: 应适当修改该字符串，
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
+
+
+	////Author
+	//PassWordAuthor passDlg;
+	//INT_PTR PassnResponse  = passDlg.DoModal();
+	//if (5 != PassnResponse)
+	//{
+	//	exit(0);
+	//}
+
 
 	CVirtualMouseClickDlg dlg;
 	m_pMainWnd = &dlg;

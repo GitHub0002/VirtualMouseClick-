@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.960
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VirtualMouseClick", "VirtualMouseClick.vcxproj", "{0C934B94-AC08-4B26-92A6-696B438CCEBC}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCApplication1", "..\MFCApplication1\MFCApplication1.vcxproj", "{0093CF3C-6110-4C22-BC31-62964EE24FA7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DES", "..\DES\DES.vcxproj", "{0B42A042-DDDC-4ABB-BCC0-00948A83D81E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CPU", "..\CPU\CPU.vcxproj", "{400C6073-BF09-41DE-9BAD-5AE1599F74C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +35,22 @@ Global
 		{0093CF3C-6110-4C22-BC31-62964EE24FA7}.Release|x64.Build.0 = Release|x64
 		{0093CF3C-6110-4C22-BC31-62964EE24FA7}.Release|x86.ActiveCfg = Release|Win32
 		{0093CF3C-6110-4C22-BC31-62964EE24FA7}.Release|x86.Build.0 = Release|Win32
+		{0B42A042-DDDC-4ABB-BCC0-00948A83D81E}.Debug|x64.ActiveCfg = Debug|x64
+		{0B42A042-DDDC-4ABB-BCC0-00948A83D81E}.Debug|x64.Build.0 = Debug|x64
+		{0B42A042-DDDC-4ABB-BCC0-00948A83D81E}.Debug|x86.ActiveCfg = Debug|Win32
+		{0B42A042-DDDC-4ABB-BCC0-00948A83D81E}.Debug|x86.Build.0 = Debug|Win32
+		{0B42A042-DDDC-4ABB-BCC0-00948A83D81E}.Release|x64.ActiveCfg = Release|x64
+		{0B42A042-DDDC-4ABB-BCC0-00948A83D81E}.Release|x64.Build.0 = Release|x64
+		{0B42A042-DDDC-4ABB-BCC0-00948A83D81E}.Release|x86.ActiveCfg = Release|Win32
+		{0B42A042-DDDC-4ABB-BCC0-00948A83D81E}.Release|x86.Build.0 = Release|Win32
+		{400C6073-BF09-41DE-9BAD-5AE1599F74C6}.Debug|x64.ActiveCfg = Debug|x64
+		{400C6073-BF09-41DE-9BAD-5AE1599F74C6}.Debug|x64.Build.0 = Debug|x64
+		{400C6073-BF09-41DE-9BAD-5AE1599F74C6}.Debug|x86.ActiveCfg = Debug|Win32
+		{400C6073-BF09-41DE-9BAD-5AE1599F74C6}.Debug|x86.Build.0 = Debug|Win32
+		{400C6073-BF09-41DE-9BAD-5AE1599F74C6}.Release|x64.ActiveCfg = Release|x64
+		{400C6073-BF09-41DE-9BAD-5AE1599F74C6}.Release|x64.Build.0 = Release|x64
+		{400C6073-BF09-41DE-9BAD-5AE1599F74C6}.Release|x86.ActiveCfg = Release|Win32
+		{400C6073-BF09-41DE-9BAD-5AE1599F74C6}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

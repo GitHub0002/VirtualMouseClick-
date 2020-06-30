@@ -10,7 +10,8 @@
 #include <dwmapi.h>
 #pragma comment (lib,"dwmapi.lib")
 
-#include "Log.h"
+//#include "Log.h"
+#include "KeyBoard.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -55,8 +56,9 @@ END_MESSAGE_MAP()
 // CVirtualMouseClickDlg 对话框
 
 
-volatile  bool CVirtualMouseClickDlg::g_bloop = true;
+volatile  bool CVirtualMouseClickDlg::g_bloop = false;
 volatile  bool CVirtualMouseClickDlg::m_blbuttondown = false;
+volatile  bool CVirtualMouseClickDlg::m_bModeClickOnly = false;
 HWND g_thisWnd = NULL;
 CVirtualMouseClickDlg::CVirtualMouseClickDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(IDD_VIRTUALMOUSECLICK_DIALOG, pParent)
@@ -198,7 +200,7 @@ LRESULT CALLBACK LowLevelMouseProc(__in  int nCode, __in  WPARAM wParam, __in  L
 		ccchar.Format("%s,坐标(%d,%d)", "鼠标右键按下", mpt.x, mpt.y);
 		LOG(ccchar.GetString());
 		//LOG("鼠标左键弹起");
-		PostMessageA(g_thisWnd, UM_DOWINTHRIGHTBUTTON, 0, 0);
+		SendMessageA(g_thisWnd, UM_DOWINTHRIGHTBUTTON, 0, 0);
 	}
 	break;
 	default:
@@ -293,13 +295,13 @@ BOOL CVirtualMouseClickDlg::OnInitDialog()
 	::SetLayeredWindowAttributes(m_hWnd, RGB(0, 255, 0), 255, LWA_COLORKEY);//       //set color transparent，指定透明的颜色
 	g_thisWnd = this->m_hWnd;
 	g_hookMouse = SetWindowsHookExA(idHook, LowLevelMouseProc, NULL, NULL);
-	
-	unsigned threadID;
+	SetKeyBoardHook();
+	//unsigned threadID;
 
-	printf("Creating second thread...\n");
+	//printf("Creating second thread...\n");
 
 	// Create the second thread.
-	m_hThread = (HANDLE)_beginthreadex(NULL, 0, &ClickVir, this, 0, &threadID);
+	//m_hThread = (HANDLE)_beginthreadex(NULL, 0, &ClickVir, this, 0, &threadID);
 	//OnBnClickedOk();
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -365,10 +367,36 @@ void virmouse_event(DWORD     dwFlags,DWORD     dx,DWORD     dy,DWORD     dwData
 {
 	CPoint ptCur;
 	GetCursorPos(&ptCur);
-	mouse_event(MOUSEEVENTF_MOVE| MOUSEEVENTF_ABSOLUTE, dx, dy, 0, 0);
+	//mouse_event(MOUSEEVENTF_MOVE| MOUSEEVENTF_ABSOLUTE, dx, dy, 0, 0);
 	mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_ABSOLUTE, dx, dy, dwData, dwExtraInfo);
 	mouse_event(MOUSEEVENTF_LEFTUP | MOUSEEVENTF_ABSOLUTE, dx, dy, dwData, dwExtraInfo);
-	mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, static_cast<long>(65535.0f / (GetSystemMetrics(SM_CXSCREEN) - 1) * ptCur.x), static_cast<long>(65535.0f / (GetSystemMetrics(SM_CYSCREEN) - 1) * ptCur.y) , 0, 0);
+	//mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, static_cast<long>(65535.0f / (GetSystemMetrics(SM_CXSCREEN) - 1) * ptCur.x), static_cast<long>(65535.0f / (GetSystemMetrics(SM_CYSCREEN) - 1) * ptCur.y) , 0, 0);
+}
+
+COLORREF OldClr = RGB(0, 0, 0); static int g_looptimes = 3;
+bool PixVChanged(CVirtualMouseClickDlg* pThis)
+{
+	if (g_looptimes)
+	{
+		--g_looptimes;
+		return true;
+	}
+	bool bPixChanged = false;
+	CPoint ptCenter;
+	CRect rcClient;
+	pThis->GetClientRect(&rcClient);
+	ptCenter = rcClient.CenterPoint();
+	ClientToScreen(pThis->m_hWnd, &ptCenter);
+	HDC hdc = GetDC(NULL);
+	COLORREF newClr = GetPixel(hdc, ptCenter.x, ptCenter.y);
+	ReleaseDC(NULL, hdc);
+	if (newClr != OldClr)
+	{
+		OldClr = newClr;
+		g_looptimes = 3;
+		bPixChanged = true;
+	}
+	return bPixChanged;
 }
 unsigned Counter;
 unsigned __stdcall ClickVir(void* pArguments)
@@ -385,7 +413,7 @@ unsigned __stdcall ClickVir(void* pArguments)
 	while (CVirtualMouseClickDlg::g_bloop)
 	{
 		//mouse_event(MOUSEEVENTF_LEFTDOWN, 400, 400, 0, 0);
-		Sleep(rand()%100+1);
+		//Sleep(rand()%100+1);
 		//x += 100;
 		//mouse_event(MOUSEEVENTF_LEFTUP, 400, 400, 0, 0);
 		
@@ -411,11 +439,19 @@ unsigned __stdcall ClickVir(void* pArguments)
 		inPut.type = INPUT_MOUSE;
 		inPut.mi = museInput;
 
-		if(!CVirtualMouseClickDlg::m_blbuttondown)
-			SendInput(1, &inPut, sizeof(inPut));
-		//virmouse_event(0, static_cast<long>(65535.0f / (GetSystemMetrics(SM_CXSCREEN) - 1) * mx) , static_cast<long>(65535.0f / (GetSystemMetrics(SM_CYSCREEN) - 1) *( my+50)) , 0, 0);
 		
-		x += 100;
+		if (CVirtualMouseClickDlg::m_bModeClickOnly)
+		{
+			virmouse_event(0, static_cast<long>(65535.0f / (GetSystemMetrics(SM_CXSCREEN) - 1) * mx), static_cast<long>(65535.0f / (GetSystemMetrics(SM_CYSCREEN) - 1) * (my + 50)), 0, 0);
+		}
+		else
+		{
+			if (!CVirtualMouseClickDlg::m_blbuttondown && PixVChanged(pThis))
+				SendInput(1, &inPut, sizeof(inPut));
+		}
+		
+		
+		//x += 100;
 		//virmouse_event(MOUSEEVENTF_LEFTUP, mx, my, 0, 0);
 		//SendInput(1, &inPut, sizeof(inPut));
 		Sleep(rand() % 500 + 1);
@@ -491,6 +527,7 @@ BOOL CVirtualMouseClickDlg::DestroyWindow()
 	}
 
 	UnhookWindowsHookEx(g_hookMouse);
+	ReleaseKeyBoardHook();
 	return CDialog::DestroyWindow();
 }
 
@@ -555,7 +592,8 @@ afx_msg LRESULT CVirtualMouseClickDlg::OnUmDowinthrightbutton(WPARAM wParam, LPA
 	if (CVirtualMouseClickDlg::g_bloop)
 	{
 		CVirtualMouseClickDlg::g_bloop = false;
-		WaitForSingleObject(m_hThread, INFINITE);
+		TerminateThread(m_hThread, 0);
+		//WaitForSingleObject(m_hThread, INFINITE);
 		printf("Counter should be 1000000; it is-> %d\n", Counter);
 		// Destroy the thread object.
 		CloseHandle(m_hThread);

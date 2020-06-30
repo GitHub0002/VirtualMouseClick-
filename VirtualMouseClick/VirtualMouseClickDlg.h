@@ -35,6 +35,7 @@ public:
 	bool m_bTracking;
 	volatile static bool g_bloop ;
 	volatile static bool m_blbuttondown;
+public: volatile static bool m_bModeClickOnly;
 	HANDLE m_hThread;
 	CList<CRect> m_listRect;
 	afx_msg void OnBnClickedOk();
